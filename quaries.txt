@@ -1,0 +1,33 @@
+#creating the first table
+CREATE TABLE public.todos(index integer,userId int,id int,title varchar(100),completed varchar(20))  
+#copy the records from the csv tabl created      
+COPY public."todos" FROM 'E:\Projects\New folder\table1.csv' DELIMITER ',' CSV HEADER ;                              
+SELECT * FROM public.todos
+
+#create the second table
+CREATE TABLE public.users(index integer,id integer,name varchar(50),username varchar(50),email varchar(100),phone varchar(50),website varchar(100),street varchar(100),suite varchar(100),city varchar(100),zipcode varchar(50),latitude varchar(50),longitude varchar(50),compname varchar(100),compcatchPhrase varchar(200),compbs varchar(500))                                                                         
+#copy the records from the csv tabl created 
+COPY public."users" FROM 'E:\Projects\New folder\table2.csv' DELIMITER ',' CSV HEADER ;       
+SELECT * FROM public.users
+
+#create the third table
+CREATE TABLE public.posts(index integer,userId int,id int,title varchar(500),body varchar(500))
+#copy the records from the csv tabl created 
+COY public."posts" FROM 'E:\Projects\New folder\table3.csv' DELIMITER ',' CSV HEADER ;
+select * from public.posts
+
+#create the fourth table
+CREATE TABLE public.comments(index integer,postId integer,id integer,name varchar(100),email varchar(100),body varchar(500))   
+#copy the records from the csv tabl created 
+COPY public."comments" FROM 'E:\Projects\New folder\table4.csv' DELIMITER ',' CSV HEADER ;                                   
+SELECT * FROM public.comments
+
+
+# Find the user who made the LONGEST post
+SELECT id,name,username FROM Users WHERE id=(SELECT userid FROM Posts ORDER BY Length(Body) DESC LIMIT 1)
+
+# Find the post with MOST comments
+SELECT id,title FROM Posts WHERE ID=(SELECT postid FROM comments GROUP BY postid ORDER BY Count(*) DESC LIMIT 1)
+
+# Find the user with LEAST number of items pending in TODO
+SELECT id,name FROM Users WHERE id=(SELECT Userid FROM TODOS WHERE todos.completed != 'true' GROUP BY Userid ORDER BY COUNT(*) ASC LIMIT 1)
